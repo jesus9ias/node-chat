@@ -1,0 +1,7 @@
+
+export const EVENTS = {
+  TEST: 'TEST',
+  DISCONNECT: 'disconnect',
+  SEND_MESSAGE: 'SEND_MESSAGE',
+  BROADCAST_MESSAGE: 'BROADCAST_MESSAGE'
+};
