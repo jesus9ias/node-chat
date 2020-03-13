@@ -2,7 +2,9 @@ extends layout
 
 block content
   div
-    p Home
-    input#message
-    button#send-message Send
+    p Chat Home
+    input#user-name(placeholder="Nombre de usuario")
+    input#message(placeholder="Mensaje")
+    button#send-message Envio
   div#messages-list
+  div#users-list
