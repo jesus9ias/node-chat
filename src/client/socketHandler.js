@@ -18,4 +18,19 @@ export default (socketClient, ui) => {
       ui.usersList.innerHTML += `<p>${user.userName}</p>`;
     });
   });
+
+  socketClient.on('start', (data) => {
+    ui.usersList.innerHTML = '';
+    data.activeUsers.forEach(user => {
+      ui.usersList.innerHTML += `<p>${user.userName}</p>`;
+    });
+
+    ui.messagesList.innerHTML = '';
+    data.messages.forEach(message => {
+      ui.messagesList.innerHTML += `<div>
+        <p>${message.currentDate} - ${message.userName}</p>
+        <p>${message.value}</p>
+      </div>`;
+    });
+  });
 };

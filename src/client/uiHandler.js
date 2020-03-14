@@ -3,6 +3,7 @@ import { EVENTS } from '../../constants';
 export default (socketClient) => {
   socketClient.emit(EVENTS.TEST, { values: 'hello' });
   const userName = document.getElementById('user-name');
+  const sendUser = document.getElementById('send-user');
   const message = document.getElementById('message');
   const sendMessage = document.getElementById('send-message');
   const messagesList = document.getElementById('messages-list');
@@ -15,6 +16,13 @@ export default (socketClient) => {
         value: message.value
       });
       message.value = '';
+    }
+  });
+
+  sendUser.addEventListener('click', () => {
+    if (userName.value.length > 0) {
+      console.log(userName.value);
+      socketClient.emit('SEND_USERNAME', userName.value);
     }
   });
 

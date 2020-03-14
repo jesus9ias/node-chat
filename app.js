@@ -17,10 +17,11 @@ APP.use(bodyParser.json());
 
 const io = socketio(SERVER);
 
+const messages = [];
 const activeUsers = [];
 
 io.set('transports', ['websocket', 'polling']);
-io.on('connection', socketHandler(io, activeUsers));
+io.on('connection', socketHandler(io, activeUsers, messages));
 
 APP.get('/', (req, res) => {
   res.render('home');

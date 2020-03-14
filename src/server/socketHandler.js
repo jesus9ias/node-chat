@@ -1,6 +1,8 @@
 import { EVENTS } from '../../constants';
 
-export default (io, activeUsers) => (socket) => {
+export default (io, activeUsers, messages) => (socket) => {
+  io.emit('start', { activeUsers, messages });
+  
   socket.on(EVENTS.TEST, (data) => {
     console.log('test connection', data);
   });
@@ -8,16 +10,19 @@ export default (io, activeUsers) => (socket) => {
   socket.on(EVENTS.SEND_MESSAGE, (data) => {
     console.log(data, socket.id);
     data.currentDate = Date.now();
+    messages.push(data);
+    io.emit(EVENTS.BROADCAST_MESSSAGE, data);
+  });
 
-    if (activeUsers.indexOf(data.userName) === -1) {
+  socket.on('SEND_USERNAME', (userName) => {
+    console.log(userName);
+    if (!activeUsers.find(u => u.userName === userName || u.id === socket.id)) {
       activeUsers.push({
         id: socket.id,
-        userName: data.userName
+        userName
       });
-      io.emit(EVENTS.BROADCAST_USERS, data.userName);
+      io.emit(EVENTS.BROADCAST_USERS, userName);
     }
-
-    io.emit(EVENTS.BROADCAST_MESSSAGE, data);
   });
 
   socket.on(EVENTS.DISCONNECT, () => {
