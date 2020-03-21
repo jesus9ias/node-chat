@@ -4,6 +4,7 @@ import express from 'express';
 import socketio from 'socket.io';
 import bodyParser from 'body-parser';
 import socketHandler from './src/server/socketHandler';
+import connection from './modules/connection';
 
 dotenv.config();
 
@@ -17,14 +18,25 @@ APP.use(bodyParser.json());
 
 const io = socketio(SERVER);
 
-const messages = [];
+let messages = [];
 const activeUsers = [];
 
 io.set('transports', ['websocket', 'polling']);
-io.on('connection', socketHandler(io, activeUsers, messages));
+
+connection.query('select * from messages', (err, results) => {
+  messages = results.map((message) => {
+    return {
+      userName: message.userName,
+      value: message.message,
+      currentDate: message.createdAt
+    }
+  });
+  io.on('connection', socketHandler(io, activeUsers, messages, connection));
+});
 
 APP.get('/', (req, res) => {
   res.render('home');
 });
+
 
 SERVER.listen(5000);

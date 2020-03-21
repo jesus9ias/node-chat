@@ -8,6 +8,7 @@ export default (socketClient) => {
   const sendMessage = document.getElementById('send-message');
   const messagesList = document.getElementById('messages-list');
   const usersList = document.getElementById('users-list');
+  const recentUsersList = document.getElementById('recent-users-list');
 
   sendMessage.addEventListener('click', () => {
     if (userName.value.length > 0 && message.value.length > 0) {
@@ -28,6 +29,7 @@ export default (socketClient) => {
 
   return {
     usersList,
-    messagesList
+    messagesList,
+    recentUsersList
   }
 };

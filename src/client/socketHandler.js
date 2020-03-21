@@ -33,4 +33,12 @@ export default (socketClient, ui) => {
       </div>`;
     });
   });
+
+  socketClient.on('BROADCAST_RECENT_USERS', (data) => {
+    console.log(11, data);
+    ui.recentUsersList.innerHTML = '';
+    data.forEach(user => {
+      ui.recentUsersList.innerHTML += `<p>${user.userName} - ${user.lastConn}</p>`;
+    });
+  });
 };
